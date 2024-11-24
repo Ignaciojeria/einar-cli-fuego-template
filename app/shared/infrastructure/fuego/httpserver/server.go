@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	ioc.Registry(New)
+	ioc.Registry(New, configuration.NewConf)
 	ioc.Registry(healthCheck, New, configuration.NewConf)
 	ioc.RegistryAtEnd(startAtEnd, New)
 }
@@ -20,8 +20,8 @@ type Server struct {
 	Fuego *fuego.Server
 }
 
-func New() Server {
-	return Server{fuego.NewServer()}
+func New(conf configuration.Conf) Server {
+	return Server{fuego.NewServer(fuego.WithAddr(":" + conf.PORT))}
 }
 
 func startAtEnd(e *fuego.Server) error {

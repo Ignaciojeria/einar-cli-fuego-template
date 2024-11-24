@@ -8,10 +8,10 @@ import (
 
 type Conf struct {
 	envLoader         EnvLoader
-	PORT              string `required:"true"`
-	VERSION           string `required:"true"`
-	ENVIRONMENT       string `required:"true"`
-	PROJECT_NAME      string `required:"true"`
+	PORT              string `required:"false"`
+	VERSION           string `required:"false"`
+	ENVIRONMENT       string `required:"false"`
+	PROJECT_NAME      string `required:"false"`
 	GOOGLE_PROJECT_ID string `required:"false"`
 }
 
