@@ -77,6 +77,12 @@
                         "append_at_start":"",
                         "append_at_end":""
                     }
+                ],
+                "literal_replacements":[
+                    {
+                        "target":"/app/shared/infrastructure/fuego/httpserver",
+                        "replacement":"/app/shared/infrastructure/httpserver"
+                    }
                 ]
             }]
         },
