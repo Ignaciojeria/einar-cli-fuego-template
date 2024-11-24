@@ -12,32 +12,37 @@ import (
 
 func init() {
 	ioc.Registry(New, configuration.NewConf)
-	ioc.Registry(healthCheck, New, configuration.NewConf)
 	ioc.RegistryAtEnd(startAtEnd, New)
 }
 
 type Server struct {
 	Manager *fuego.Server
+	conf    configuration.Conf
 }
 
 func New(conf configuration.Conf) Server {
-	return Server{fuego.NewServer(fuego.WithAddr(":" + conf.PORT))}
+	server := Server{
+		Manager: fuego.NewServer(fuego.WithAddr(":" + conf.PORT)),
+		conf:    conf,
+	}
+	server.healthCheck()
+	return server
 }
 
-func startAtEnd(e *fuego.Server) error {
-	return e.Run()
+func startAtEnd(e Server) error {
+	return e.Manager.Run()
 }
 
-func healthCheck(s *fuego.Server, c configuration.Conf) error {
+func (s Server) healthCheck() error {
 	h, err := health.New(
 		health.WithComponent(health.Component{
-			Name:    c.PROJECT_NAME,
-			Version: c.VERSION,
+			Name:    s.conf.PROJECT_NAME,
+			Version: s.conf.VERSION,
 		}), health.WithSystemInfo())
 	if err != nil {
 		return err
 	}
-	fuego.GetStd(s,
+	fuego.GetStd(s.Manager,
 		"/health",
 		h.Handler().ServeHTTP,
 		option.Summary("healthCheck"))
