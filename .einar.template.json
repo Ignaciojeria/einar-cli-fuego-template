@@ -51,6 +51,12 @@
                         "append_at_start":"",
                         "append_at_end":""
                     }
+                ],
+                "literal_replacements":[
+                    {
+                        "target":"archetype/app/shared/infrastructure/labstackecho/httpserver",
+                        "replacement":"archetype/app/shared/infrastructure/httpserver"
+                    }
                 ]
             },
             {
