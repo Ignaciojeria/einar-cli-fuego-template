@@ -17,7 +17,7 @@ func init() {
 }
 
 type Server struct {
-	*fuego.Server
+	Fuego *fuego.Server
 }
 
 func New() Server {
@@ -45,5 +45,5 @@ func healthCheck(s *fuego.Server, c configuration.Conf) error {
 }
 
 func WrapPostStd(s Server, path string, f func(w http.ResponseWriter, r *http.Request)) {
-	fuego.PostStd(s.Server, path, f)
+	fuego.PostStd(s.Fuego, path, f)
 }

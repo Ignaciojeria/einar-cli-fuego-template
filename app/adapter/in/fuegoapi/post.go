@@ -11,8 +11,8 @@ import (
 func init() {
 	ioc.Registry(newTemplatePost, httpserver.New)
 }
-func newTemplatePost(s *fuego.Server) {
-	fuego.Post(s, "/insert-your-custom-pattern-here", func(c *fuego.ContextWithBody[any]) (any, error) {
+func newTemplatePost(s httpserver.Server) {
+	fuego.Post(s.Fuego, "/insert-your-custom-pattern-here", func(c *fuego.ContextWithBody[any]) (any, error) {
 		body, err := c.Body()
 		if err != nil {
 			return "unimplemented", err
