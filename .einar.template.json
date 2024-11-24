@@ -54,8 +54,8 @@
                 ],
                 "literal_replacements":[
                     {
-                        "target":"\"archetype/app/shared/infrastructure/labstackecho/httpserver\"",
-                        "replacement":"\"archetype/app/shared/infrastructure/httpserver\""
+                        "target":"/app/shared/infrastructure/labstackecho/httpserver",
+                        "replacement":"/app/shared/infrastructure/httpserver"
                     }
                 ]
             },
