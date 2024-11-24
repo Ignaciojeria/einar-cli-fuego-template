@@ -18,21 +18,21 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type Server[T any] struct {
-	Manager T
+type Server struct {
+	Manager *echo.Echo
 	conf    configuration.Conf
 }
 
 func init() {
-	ioc.Registry(New[*echo.Echo], configuration.NewConf)
+	ioc.Registry(New, configuration.NewConf)
 	ioc.Registry(
 		healthCheck,
-		New[*echo.Echo],
+		New,
 		configuration.NewConf)
-	ioc.RegistryAtEnd(Start, New[*echo.Echo])
+	ioc.RegistryAtEnd(Start, New)
 }
 
-func New[T *echo.Echo](c configuration.Conf) Server[T] {
+func New(c configuration.Conf) Server {
 	e := echo.New()
 	e.Validator = NewValidator()
 	ctx, cancel := context.WithCancel(context.Background())
@@ -47,13 +47,13 @@ func New[T *echo.Echo](c configuration.Conf) Server[T] {
 		}
 		cancel()
 	}()
-	return Server[T]{
+	return Server{
 		conf:    c,
 		Manager: e,
 	}
 }
 
-func Start(s Server[*echo.Echo]) error {
+func Start(s Server) error {
 	printRoutes(s)
 	err := s.Manager.Start(":" + s.conf.PORT)
 	if err != nil {
@@ -65,11 +65,11 @@ func Start(s Server[*echo.Echo]) error {
 	return err
 }
 
-func WrapPostStd(s Server[*echo.Echo], path string, f func(w http.ResponseWriter, r *http.Request)) {
+func WrapPostStd(s Server, path string, f func(w http.ResponseWriter, r *http.Request)) {
 	s.Manager.POST(path, echo.WrapHandler(http.HandlerFunc(f)))
 }
 
-func printRoutes(s Server[*echo.Echo]) {
+func printRoutes(s Server) {
 	routes := s.Manager.Routes()
 	for _, route := range routes {
 		log.Printf("Method: %s, Path: %s, Name: %s\n", route.Method, route.Path, route.Name)
@@ -77,7 +77,7 @@ func printRoutes(s Server[*echo.Echo]) {
 }
 
 // To see usage examples of the library, visit: https://github.com/hellofresh/health-go
-func healthCheck(e Server[*echo.Echo], c configuration.Conf) {
+func healthCheck(e Server, c configuration.Conf) {
 	h, _ := health.New(
 		health.WithComponent(health.Component{
 			Name:    c.PROJECT_NAME,

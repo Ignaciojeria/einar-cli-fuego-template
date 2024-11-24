@@ -1,7 +1,7 @@
 package api
 
 import (
-	"archetype/app/shared/infrastructure/httpserver"
+	"archetype/app/shared/infrastructure/labstackecho/httpserver"
 	"net/http"
 
 	ioc "github.com/Ignaciojeria/einar-ioc/v2"
@@ -9,9 +9,9 @@ import (
 )
 
 func init() {
-	ioc.Registry(newTemplateDelete, httpserver.New[*echo.Echo])
+	ioc.Registry(newTemplateDelete, httpserver.New)
 }
-func newTemplateDelete(e httpserver.Server[*echo.Echo]) {
+func newTemplateDelete(e httpserver.Server) {
 	e.Manager.DELETE("/insert-your-custom-pattern-here", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]string{
 			"message": "Unimplemented",

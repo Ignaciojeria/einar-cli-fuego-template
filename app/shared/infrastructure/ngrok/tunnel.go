@@ -12,9 +12,9 @@ import (
 )
 
 func init() {
-	ioc.Registry(newTunnel, httpserver.New[any])
+	ioc.Registry(newTunnel, httpserver.New)
 }
-func newTunnel(s httpserver.Server[any]) error {
+func newTunnel(s httpserver.Server) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	var success bool
 	go func() {

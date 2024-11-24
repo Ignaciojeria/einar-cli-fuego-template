@@ -13,10 +13,10 @@ import (
 )
 
 func init() {
-	ioc.Registry(NewTunnel, httpserver.New[any])
+	ioc.Registry(NewTunnel, httpserver.New)
 }
 
-func NewTunnel(s httpserver.Server[any]) error {
+func NewTunnel(s httpserver.Server) error {
 	root, err := environment.LoadRoot()
 	if err != nil {
 		return err

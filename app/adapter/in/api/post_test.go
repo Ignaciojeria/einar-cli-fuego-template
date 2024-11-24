@@ -7,14 +7,12 @@ import (
 	"testing"
 
 	"archetype/app/shared/configuration"
-	"archetype/app/shared/infrastructure/httpserver"
-
-	"github.com/labstack/echo/v4"
+	"archetype/app/shared/infrastructure/labstackecho/httpserver"
 )
 
 func TestNewTemplatePost(t *testing.T) {
 	conf := configuration.Conf{}
-	wrapper := httpserver.New[*echo.Echo](conf)
+	wrapper := httpserver.New(conf)
 
 	newTemplatePost(wrapper)
 
