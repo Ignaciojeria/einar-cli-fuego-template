@@ -2,7 +2,6 @@ package httpserver
 
 import (
 	"archetype/app/shared/configuration"
-	"archetype/app/shared/validator"
 	"context"
 	"fmt"
 	"log"
@@ -12,35 +11,30 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/go-playground/validator/v10"
+
 	ioc "github.com/Ignaciojeria/einar-ioc/v2"
 	"github.com/hellofresh/health-go/v5"
 	"github.com/labstack/echo/v4"
 )
 
-type Server struct {
-	*echo.Echo
-	conf configuration.Conf
+type Server[T any] struct {
+	Manager T
+	conf    configuration.Conf
 }
 
 func init() {
-	ioc.Registry(echo.New)
-	ioc.Registry(
-		New,
-		echo.New,
-		configuration.NewConf,
-		validator.NewValidator)
+	ioc.Registry(New[*echo.Echo], configuration.NewConf)
 	ioc.Registry(
 		healthCheck,
-		New,
+		New[*echo.Echo],
 		configuration.NewConf)
-	ioc.RegistryAtEnd(Start, New)
+	ioc.RegistryAtEnd(Start, New[*echo.Echo])
 }
 
-func New(
-	e *echo.Echo,
-	c configuration.Conf,
-	validator *validator.Validator) Server {
-	e.Validator = validator
+func New[T *echo.Echo](c configuration.Conf) Server[T] {
+	e := echo.New()
+	e.Validator = NewValidator()
 	ctx, cancel := context.WithCancel(context.Background())
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
@@ -53,43 +47,53 @@ func New(
 		}
 		cancel()
 	}()
-	return Server{
-		conf: c,
-		Echo: e,
+	return Server[T]{
+		conf:    c,
+		Manager: e,
 	}
 }
 
-func Start(e Server) error {
-	return e.start()
-}
-
-func (s Server) start() error {
-	s.printRoutes()
-	err := s.Echo.Start(":" + s.conf.PORT)
-	fmt.Println(err)
+func Start(s Server[*echo.Echo]) error {
+	printRoutes(s)
+	err := s.Manager.Start(":" + s.conf.PORT)
+	if err != nil {
+		fmt.Println("Error starting server:", err)
+	}
 	fmt.Println("waiting for resources to shut down....")
 	time.Sleep(2 * time.Second)
 	fmt.Println("done.")
 	return err
 }
 
-func WrapPostStd(s Server, path string, f func(w http.ResponseWriter, r *http.Request)) {
-	s.POST(path, echo.WrapHandler(http.HandlerFunc(f)))
+func WrapPostStd(s Server[*echo.Echo], path string, f func(w http.ResponseWriter, r *http.Request)) {
+	s.Manager.POST(path, echo.WrapHandler(http.HandlerFunc(f)))
 }
 
-func (s Server) printRoutes() {
-	routes := s.Echo.Routes()
+func printRoutes(s Server[*echo.Echo]) {
+	routes := s.Manager.Routes()
 	for _, route := range routes {
 		log.Printf("Method: %s, Path: %s, Name: %s\n", route.Method, route.Path, route.Name)
 	}
 }
 
 // To see usage examples of the library, visit: https://github.com/hellofresh/health-go
-func healthCheck(e Server, c configuration.Conf) {
+func healthCheck(e Server[*echo.Echo], c configuration.Conf) {
 	h, _ := health.New(
 		health.WithComponent(health.Component{
 			Name:    c.PROJECT_NAME,
 			Version: c.VERSION,
 		}), health.WithSystemInfo())
-	e.GET("/health", echo.WrapHandler(h.Handler()))
+	e.Manager.GET("/health", echo.WrapHandler(h.Handler()))
+}
+
+type Validator struct {
+	validator *validator.Validate
+}
+
+func (cv *Validator) Validate(i interface{}) error {
+	return cv.validator.Struct(i)
+}
+
+func NewValidator() *Validator {
+	return &Validator{validator: validator.New()}
 }

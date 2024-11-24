@@ -28,7 +28,7 @@ var logger = slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
 type SubscriptionWrapper struct {
 	client           *pubsub.Client
-	httpServer       httpserver.Server
+	httpServer       httpserver.Server[any]
 	messageProcessor MessageProcessor
 }
 
@@ -36,18 +36,18 @@ func init() {
 	ioc.Registry(
 		NewSubscriptionManager,
 		gcppubsub.NewClient,
-		httpserver.New,
+		httpserver.New[any],
 	)
 }
 func NewSubscriptionManager(
 	c *pubsub.Client,
-	s httpserver.Server) SubscriptionManager {
+	s httpserver.Server[any]) SubscriptionManager {
 	return &SubscriptionWrapper{client: c, httpServer: s}
 }
 
 func newSubscriptionManagerWithMessageProcessor(
 	c *pubsub.Client,
-	s httpserver.Server,
+	s httpserver.Server[any],
 	mp MessageProcessor) SubscriptionManager {
 	return &SubscriptionWrapper{client: c, httpServer: s, messageProcessor: mp}
 }

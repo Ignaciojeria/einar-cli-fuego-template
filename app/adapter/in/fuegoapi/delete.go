@@ -1,7 +1,7 @@
 package fuegoapi
 
 import (
-	"archetype/app/shared/infrastructure/fuego/httpserver"
+	"archetype/app/shared/infrastructure/httpserver"
 
 	ioc "github.com/Ignaciojeria/einar-ioc/v2"
 	"github.com/go-fuego/fuego"
@@ -9,10 +9,10 @@ import (
 )
 
 func init() {
-	ioc.Registry(newTemplateDelete, httpserver.New)
+	ioc.Registry(newTemplateDelete, httpserver.New[*fuego.Server])
 }
-func newTemplateDelete(s httpserver.Server) {
-	fuego.Delete(s.Fuego, "/insert-your-custom-pattern-here", func(c *fuego.ContextWithBody[any]) (any, error) {
+func newTemplateDelete(s httpserver.Server[*fuego.Server]) {
+	fuego.Delete(s.Manager, "/insert-your-custom-pattern-here", func(c *fuego.ContextWithBody[any]) (any, error) {
 		body, err := c.Body()
 		if err != nil {
 			return "unimplemented", err

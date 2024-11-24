@@ -1,7 +1,7 @@
 package api
 
 import (
-	"archetype/app/shared/infrastructure/labstackecho/httpserver"
+	"archetype/app/shared/infrastructure/httpserver"
 	"net/http"
 
 	ioc "github.com/Ignaciojeria/einar-ioc/v2"
@@ -9,10 +9,10 @@ import (
 )
 
 func init() {
-	ioc.Registry(newTemplateGet, httpserver.New)
+	ioc.Registry(newTemplateGet, httpserver.New[*echo.Echo])
 }
-func newTemplateGet(e httpserver.Server) {
-	e.GET("/insert-your-custom-pattern-here", func(c echo.Context) error {
+func newTemplateGet(e httpserver.Server[*echo.Echo]) {
+	e.Manager.GET("/insert-your-custom-pattern-here", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]string{
 			"message": "Unimplemented",
 		})

@@ -7,25 +7,21 @@ import (
 	"testing"
 
 	"archetype/app/shared/configuration"
-	"archetype/app/shared/infrastructure/labstackecho/httpserver"
-	"archetype/app/shared/validator"
+	"archetype/app/shared/infrastructure/httpserver"
 
 	"github.com/labstack/echo/v4"
 )
 
 func TestNewTemplatePost(t *testing.T) {
-	e := echo.New()
 	conf := configuration.Conf{}
-	wrapper := httpserver.New(e,
-		conf,
-		validator.NewValidator())
+	wrapper := httpserver.New[*echo.Echo](conf)
 
 	newTemplatePost(wrapper)
 
 	req := httptest.NewRequest(http.MethodPost, "/insert-your-custom-pattern-here", nil)
 	rec := httptest.NewRecorder()
 
-	e.ServeHTTP(rec, req)
+	wrapper.Manager.ServeHTTP(rec, req)
 
 	if rec.Code != http.StatusOK {
 		t.Errorf("expected status code %d, got %d", http.StatusOK, rec.Code)
