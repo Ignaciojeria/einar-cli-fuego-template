@@ -6,12 +6,14 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
 	ioc "github.com/Ignaciojeria/einar-ioc/v2"
+	"github.com/hellofresh/health-go/v5"
 	"github.com/labstack/echo/v4"
 )
 
@@ -27,6 +29,11 @@ func init() {
 		echo.New,
 		configuration.NewConf,
 		validator.NewValidator)
+	ioc.Registry(
+		healthCheck,
+		New,
+		configuration.NewConf)
+	ioc.RegistryAtEnd(Start, New)
 }
 
 func New(
@@ -52,9 +59,6 @@ func New(
 	}
 }
 
-func init() {
-	ioc.RegistryAtEnd(Start, New)
-}
 func Start(e Server) error {
 	return e.start()
 }
@@ -69,9 +73,23 @@ func (s Server) start() error {
 	return err
 }
 
+func WrapPostStd(s Server, path string, f func(w http.ResponseWriter, r *http.Request)) {
+	s.POST(path, echo.WrapHandler(http.HandlerFunc(f)))
+}
+
 func (s Server) printRoutes() {
 	routes := s.Echo.Routes()
 	for _, route := range routes {
 		log.Printf("Method: %s, Path: %s, Name: %s\n", route.Method, route.Path, route.Name)
 	}
+}
+
+// To see usage examples of the library, visit: https://github.com/hellofresh/health-go
+func healthCheck(e Server, c configuration.Conf) {
+	h, _ := health.New(
+		health.WithComponent(health.Component{
+			Name:    c.PROJECT_NAME,
+			Version: c.VERSION,
+		}), health.WithSystemInfo())
+	e.GET("/health", echo.WrapHandler(h.Handler()))
 }

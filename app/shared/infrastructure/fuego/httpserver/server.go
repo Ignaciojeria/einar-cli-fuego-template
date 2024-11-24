@@ -2,6 +2,7 @@ package httpserver
 
 import (
 	"archetype/app/shared/configuration"
+	"net/http"
 
 	ioc "github.com/Ignaciojeria/einar-ioc/v2"
 	"github.com/go-fuego/fuego"
@@ -15,8 +16,12 @@ func init() {
 	ioc.RegistryAtEnd(startAtEnd, New)
 }
 
-func New() *fuego.Server {
-	return fuego.NewServer()
+type Server struct {
+	*fuego.Server
+}
+
+func New() Server {
+	return Server{fuego.NewServer()}
 }
 
 func startAtEnd(e *fuego.Server) error {
@@ -37,4 +42,8 @@ func healthCheck(s *fuego.Server, c configuration.Conf) error {
 		h.Handler().ServeHTTP,
 		option.Summary("healthCheck"))
 	return nil
+}
+
+func WrapPostStd(s Server, path string, f func(w http.ResponseWriter, r *http.Request)) {
+	fuego.PostStd(s.Server, path, f)
 }

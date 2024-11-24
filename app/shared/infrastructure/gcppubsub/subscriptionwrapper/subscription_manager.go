@@ -80,7 +80,7 @@ func (s *SubscriptionWrapper) receive(ctx context.Context, m *pubsub.Message) {
 }
 
 func (s *SubscriptionWrapper) WithPushHandler(path string) SubscriptionManager {
-	s.httpServer.POST(path, s.pushHandler)
+	httpserver.WrapPostStd(s.httpServer, path, s.pushHandler)
 	return s
 }
 

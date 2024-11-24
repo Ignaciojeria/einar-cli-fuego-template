@@ -11,8 +11,8 @@ import (
 func init() {
 	ioc.Registry(newTemplateDelete, httpserver.New)
 }
-func newTemplateDelete(s *fuego.Server) {
-	fuego.Delete(s, "/insert-your-custom-pattern-here", func(c *fuego.ContextWithBody[any]) (any, error) {
+func newTemplateDelete(s httpserver.Server) {
+	fuego.Delete(s.Server, "/insert-your-custom-pattern-here", func(c *fuego.ContextWithBody[any]) (any, error) {
 		body, err := c.Body()
 		if err != nil {
 			return "unimplemented", err

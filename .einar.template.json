@@ -993,11 +993,6 @@
                     "ioc_discovery":true
                 },
                 {
-                    "source_file": "app/shared/infrastructure/healthcheck/healthcheck.go",
-                    "destination_dir": "app/shared/infrastructure/healthcheck",
-                    "ioc_discovery":true
-                },
-                {
                     "source_file": "app/shared/validator/validator.go",
                     "destination_dir": "app/shared/validator"
                 }
