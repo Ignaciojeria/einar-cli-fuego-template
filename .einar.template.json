@@ -784,7 +784,7 @@
         {
             "name":"gcp-pubsub",
             "command":"einar install gcp-pubsub",
-            "depends_on":["labstack-echo"],
+            "depends_on":["http-server"],
             "files": [
                 {   
                     "source_file": "mocks/subscription_manager_mock.go",
@@ -899,7 +899,7 @@
         },
         {
             "name":"zrok",
-            "depends_on":["labstack-echo"],
+            "depends_on":["http-server"],
             "files": [
                 {   
                     "source_file": "app/shared/infrastructure/zrok/tunnel.go",
