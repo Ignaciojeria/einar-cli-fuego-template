@@ -39,6 +39,131 @@
             "kind":"get-controller",
             "adapter_type":"inbound",
             "command":"einar generate get-controller ${operation_name}",
+            "depends_on":["fuego"],
+            "files": [{
+                "source_file": "app/adapter/in/fuegoapi/get.go",
+                "destination_dir": "app/adapter/in/fuegoapi",
+                "ioc_discovery":true,
+                "replace_holders": [
+                    {
+                        "kind":"camelCase",
+                        "name": "newTemplateGet",
+                        "append_at_start":"",
+                        "append_at_end":""
+                    }
+                ],
+                "literal_replacements":[
+                    {
+                        "target":"/app/shared/infrastructure/fuego/httpserver",
+                        "replacement":"/app/shared/infrastructure/httpserver"
+                    }
+                ]
+            }]
+        },
+        {
+            "kind":"post-controller",
+            "adapter_type":"inbound",
+            "command":"einar generate post-controller ${operation_name}",
+            "depends_on":["fuego"],
+            "files": [{
+                "source_file": "app/adapter/in/fuegoapi/post.go",
+                "destination_dir": "app/adapter/in/fuegoapi",
+                "ioc_discovery":true,
+                "replace_holders": [
+                    {
+                        "kind":"camelCase",
+                        "name": "newTemplatePost",
+                        "append_at_start":"",
+                        "append_at_end":""
+                    }
+                ],
+                "literal_replacements":[
+                    {
+                        "target":"/app/shared/infrastructure/fuego/httpserver",
+                        "replacement":"/app/shared/infrastructure/httpserver"
+                    }
+                ]
+            }]
+        },
+        {
+            "kind":"patch-controller",
+            "adapter_type":"inbound",
+            "command":"einar generate patch-controller ${operation_name}",
+            "depends_on":["fuego"],
+            "files": [{
+                "source_file": "app/adapter/in/fuegoapi/patch.go",
+                "destination_dir": "app/adapter/in/fuegoapi",
+                "ioc_discovery":true,
+                "replace_holders": [
+                    {
+                        "kind":"camelCase",
+                        "name": "newTemplatePatch",
+                        "append_at_start":"",
+                        "append_at_end":""
+                    }
+                ],
+                "literal_replacements":[
+                    {
+                        "target":"/app/shared/infrastructure/fuego/httpserver",
+                        "replacement":"/app/shared/infrastructure/httpserver"
+                    }
+                ]
+            }]
+        },
+        {
+            "kind":"put-controller",
+            "adapter_type":"inbound",
+            "command":"einar generate put-controller ${operation_name}",
+            "depends_on":["fuego"],
+            "files": [{
+                "source_file": "app/adapter/in/fuegoapi/put.go",
+                "destination_dir": "app/adapter/in/fuegoapi",
+                "ioc_discovery":true,
+                "replace_holders": [
+                    {
+                        "kind":"camelCase",
+                        "name": "newTemplatePut",
+                        "append_at_start":"",
+                        "append_at_end":""
+                    }
+                ],
+                "literal_replacements":[
+                    {
+                        "target":"/app/shared/infrastructure/fuego/httpserver",
+                        "replacement":"/app/shared/infrastructure/httpserver"
+                    }
+                ]
+            }]
+        },
+        {
+            "kind":"delete-controller",
+            "adapter_type":"inbound",
+            "command":"einar generate delete-controller ${operation_name}",
+            "depends_on":["fuego"],
+            "files": [{
+                "source_file": "app/adapter/in/fuegoapi/delete.go",
+                "destination_dir": "app/adapter/in/fuegoapi",
+                "ioc_discovery":true,
+                "replace_holders": [
+                    {
+                        "kind":"camelCase",
+                        "name": "newTemplateDelete",
+                        "append_at_start":"",
+                        "append_at_end":""
+                    }
+                ],
+                "literal_replacements":[
+                    {
+                        "target":"/app/shared/infrastructure/fuego/httpserver",
+                        "replacement":"/app/shared/infrastructure/httpserver"
+                    }
+                ]
+            }]
+        },
+        {
+            "kind":"get-controller",
+            "adapter_type":"inbound",
+            "command":"einar generate get-controller ${operation_name}",
             "depends_on":["labstack-echo"],
             "files": [{
                 "source_file": "app/adapter/in/api/get.go",
@@ -77,107 +202,6 @@
                         "append_at_start":"",
                         "append_at_end":""
                     }
-                ],
-                "literal_replacements":[
-                    {
-                        "target":"/app/shared/infrastructure/fuego/httpserver",
-                        "replacement":"/app/shared/infrastructure/httpserver"
-                    }
-                ]
-            }]
-        },
-        {
-            "kind":"get-controller",
-            "adapter_type":"inbound",
-            "command":"einar generate get-controller ${operation_name}",
-            "depends_on":["fuego"],
-            "files": [{
-                "source_file": "app/adapter/in/fuegoapi/get.go",
-                "destination_dir": "app/adapter/in/fuegoapi",
-                "ioc_discovery":true,
-                "replace_holders": [
-                    {
-                        "kind":"camelCase",
-                        "name": "newTemplateGet",
-                        "append_at_start":"",
-                        "append_at_end":""
-                    }
-                ]
-            }]
-        },
-        {
-            "kind":"post-controller-fuego",
-            "adapter_type":"inbound",
-            "command":"einar generate post-controller-fuego ${operation_name}",
-            "depends_on":["fuego"],
-            "files": [{
-                "source_file": "app/adapter/in/fuegoapi/post.go",
-                "destination_dir": "app/adapter/in/fuegoapi",
-                "ioc_discovery":true,
-                "replace_holders": [
-                    {
-                        "kind":"camelCase",
-                        "name": "newTemplatePost",
-                        "append_at_start":"",
-                        "append_at_end":""
-                    }
-                ]
-            }]
-        },
-        {
-            "kind":"patch-controller-fuego",
-            "adapter_type":"inbound",
-            "command":"einar generate patch-controller-fuego ${operation_name}",
-            "depends_on":["fuego"],
-            "files": [{
-                "source_file": "app/adapter/in/fuegoapi/patch.go",
-                "destination_dir": "app/adapter/in/fuegoapi",
-                "ioc_discovery":true,
-                "replace_holders": [
-                    {
-                        "kind":"camelCase",
-                        "name": "newTemplatePatch",
-                        "append_at_start":"",
-                        "append_at_end":""
-                    }
-                ]
-            }]
-        },
-        {
-            "kind":"put-controller-fuego",
-            "adapter_type":"inbound",
-            "command":"einar generate put-controller-fuego ${operation_name}",
-            "depends_on":["fuego"],
-            "files": [{
-                "source_file": "app/adapter/in/fuegoapi/put.go",
-                "destination_dir": "app/adapter/in/fuegoapi",
-                "ioc_discovery":true,
-                "replace_holders": [
-                    {
-                        "kind":"camelCase",
-                        "name": "newTemplatePut",
-                        "append_at_start":"",
-                        "append_at_end":""
-                    }
-                ]
-            }]
-        },
-        {
-            "kind":"delete-controller-fuego",
-            "adapter_type":"inbound",
-            "command":"einar generate delete-controller-fuego ${operation_name}",
-            "depends_on":["fuego"],
-            "files": [{
-                "source_file": "app/adapter/in/fuegoapi/delete.go",
-                "destination_dir": "app/adapter/in/fuegoapi",
-                "ioc_discovery":true,
-                "replace_holders": [
-                    {
-                        "kind":"camelCase",
-                        "name": "newTemplateDelete",
-                        "append_at_start":"",
-                        "append_at_end":""
-                    }
                 ]
             }]
         },
@@ -196,6 +220,12 @@
                         "name": "newTemplatePost",
                         "append_at_start":"",
                         "append_at_end":""
+                    }
+                ],
+                "literal_replacements":[
+                    {
+                        "target":"/app/shared/infrastructure/labstackecho/httpserver",
+                        "replacement":"/app/shared/infrastructure/httpserver"
                     }
                 ]
             },
@@ -236,6 +266,12 @@
                         "append_at_start":"",
                         "append_at_end":""
                     }
+                ],
+                "literal_replacements":[
+                    {
+                        "target":"/app/shared/infrastructure/labstackecho/httpserver",
+                        "replacement":"/app/shared/infrastructure/httpserver"
+                    }
                 ]
             },
             {
@@ -275,6 +311,12 @@
                         "append_at_start":"",
                         "append_at_end":""
                     }
+                ],
+                "literal_replacements":[
+                    {
+                        "target":"/app/shared/infrastructure/labstackecho/httpserver",
+                        "replacement":"/app/shared/infrastructure/httpserver"
+                    }
                 ]
             },
             {
@@ -313,6 +355,12 @@
                         "name": "newTemplateDelete",
                         "append_at_start":"",
                         "append_at_end":""
+                    }
+                ],
+                "literal_replacements":[
+                    {
+                        "target":"/app/shared/infrastructure/labstackecho/httpserver",
+                        "replacement":"/app/shared/infrastructure/httpserver"
                     }
                 ]
             },

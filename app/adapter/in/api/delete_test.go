@@ -37,4 +37,5 @@ func TestNewTemplateDelete(t *testing.T) {
 	if resp.Message != expectedMessage {
 		t.Errorf("expected message %q, got %q", expectedMessage, resp.Message)
 	}
+
 }
