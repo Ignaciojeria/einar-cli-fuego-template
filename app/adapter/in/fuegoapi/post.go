@@ -12,11 +12,9 @@ func init() {
 	ioc.Registry(newTemplatePost, httpserver.New)
 }
 func newTemplatePost(s httpserver.Server) {
-	fuego.Post(s.Manager, "/insert-your-custom-pattern-here", func(c *fuego.ContextWithBody[any]) (any, error) {
-		body, err := c.Body()
-		if err != nil {
-			return "unimplemented", err
-		}
-		return body, nil
-	}, option.Summary("newTemplatePost"))
+	fuego.Post(s.Manager, "/insert-your-custom-pattern-here",
+		func(c *fuego.ContextNoBody) (any, error) {
+
+			return "unimplemented", nil
+		}, option.Summary("newTemplatePost"))
 }

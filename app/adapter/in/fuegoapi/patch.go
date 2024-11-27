@@ -12,11 +12,9 @@ func init() {
 	ioc.Registry(newTemplatePatch, httpserver.New)
 }
 func newTemplatePatch(s httpserver.Server) {
-	fuego.Patch(s.Manager, "/insert-your-custom-pattern-here", func(c *fuego.ContextWithBody[any]) (any, error) {
-		body, err := c.Body()
-		if err != nil {
-			return "unimplemented", err
-		}
-		return body, nil
-	}, option.Summary("newTemplatePatch"))
+	fuego.Patch(s.Manager, "/insert-your-custom-pattern-here",
+		func(c *fuego.ContextNoBody) (any, error) {
+
+			return "unimplemented", nil
+		}, option.Summary("newTemplatePatch"))
 }
