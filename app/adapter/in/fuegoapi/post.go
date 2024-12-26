@@ -13,7 +13,7 @@ func init() {
 }
 func newTemplatePost(s httpserver.Server) {
 	fuego.Post(s.Manager, "/insert-your-custom-pattern-here",
-		func(c *fuego.ContextNoBody) (any, error) {
+		func(c fuego.ContextNoBody) (any, error) {
 
 			return "unimplemented", nil
 		}, option.Summary("newTemplatePost"))
