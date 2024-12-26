@@ -13,7 +13,7 @@ func init() {
 }
 func newTemplateGet(s httpserver.Server) {
 	fuego.Get(s.Manager, "/insert-your-custom-pattern-here",
-		func(c *fuego.ContextNoBody) (any, error) {
+		func(c fuego.ContextNoBody) (any, error) {
 
 			return "unimplemented", nil
 		}, option.Summary("newTemplateGet"))

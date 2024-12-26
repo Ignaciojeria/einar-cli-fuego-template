@@ -13,7 +13,7 @@ func init() {
 }
 func newTemplateDelete(s httpserver.Server) {
 	fuego.Delete(s.Manager, "/insert-your-custom-pattern-here",
-		func(c *fuego.ContextNoBody) (any, error) {
+		func(c fuego.ContextNoBody) (any, error) {
 
 			return "unimplemented", nil
 		}, option.Summary("newTemplateDelete"))
