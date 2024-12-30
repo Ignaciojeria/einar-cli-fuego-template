@@ -26,17 +26,17 @@ func OpenObserveGRPCLogProvider(conf configuration.Conf) (*slog.Logger, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 
 	var exporterOpts []otlploggrpc.Option
-	exporterOpts = append(exporterOpts, otlploggrpc.WithEndpoint(conf.LoadFromSystem(OTEL_EXPORTER_OTLP_ENDPOINT)))
-	if conf.LoadFromSystem(OTEL_EXPORTER_OTLP_INSECURE) == "true" {
+	exporterOpts = append(exporterOpts, otlploggrpc.WithEndpoint(configuration.Getenv(OTEL_EXPORTER_OTLP_ENDPOINT)))
+	if configuration.Getenv(OTEL_EXPORTER_OTLP_INSECURE) == "true" {
 		exporterOpts = append(exporterOpts, otlploggrpc.WithTLSCredentials(insecure.NewCredentials()))
 	}
 	exporterOpts = append(exporterOpts, otlploggrpc.WithDialOption(grpc.WithUnaryInterceptor(func(
 		ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker,
 		opts ...grpc.CallOption) error {
 		md := metadata.New(map[string]string{
-			"Authorization": conf.LoadFromSystem(OPENOBSERVE_AUTHORIZATION),
-			"organization":  conf.LoadFromSystem(OPENOBSERVE_ORGANIZATION),
-			"stream-name":   conf.LoadFromSystem(OPENOBSERVE_STREAM_NAME),
+			"Authorization": configuration.Getenv(OPENOBSERVE_AUTHORIZATION),
+			"organization":  configuration.Getenv(OPENOBSERVE_ORGANIZATION),
+			"stream-name":   configuration.Getenv(OPENOBSERVE_STREAM_NAME),
 		})
 		ctx = metadata.NewOutgoingContext(ctx, md)
 		return invoker(ctx, method, req, reply, cc, opts...)

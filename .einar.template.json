@@ -13,8 +13,8 @@
                 "destination_file": "app/shared/configuration/conf.go"
             },
             {
-                "source_file": "app/shared/configuration/env_loader.go",
-                "destination_file": "app/shared/configuration/env_loader.go"
+                "source_file": "app/shared/configuration/parse.go",
+                "destination_file": "app/shared/configuration/parse.go"
             },
             {
                 "source_file": "main.go",
@@ -1067,6 +1067,22 @@
                     "source_file": "app/shared/infrastructure/fuego/httpserver/server.go",
                     "destination_dir": "app/shared/infrastructure/httpserver",
                     "ioc_discovery":true
+                }
+            ]
+        },
+        {
+            "name":"tidb",
+            "depends_on":[],
+            "files": [
+                {
+                    "source_file": "app/shared/infrastructure/tidb/connection.go",
+                    "destination_dir": "app/shared/infrastructure/tidb",
+                    "ioc_discovery":true
+                },
+                {   
+                    "source_file": "app/shared/configuration/tidb_conf.go",
+                    "destination_dir": "app/shared/configuration",
+                    "ioc_discovery":false
                 }
             ]
         }

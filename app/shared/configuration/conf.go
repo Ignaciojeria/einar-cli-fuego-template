@@ -1,38 +1,21 @@
 package configuration
 
 import (
-	"archetype/app/shared/constants"
-
 	ioc "github.com/Ignaciojeria/einar-ioc/v2"
 )
 
-type Conf struct {
-	envLoader         EnvLoader
-	PORT              string `required:"false"`
-	VERSION           string `required:"false"`
-	ENVIRONMENT       string `required:"false"`
-	PROJECT_NAME      string `required:"false"`
-	GOOGLE_PROJECT_ID string `required:"false"`
-}
-
 func init() {
-	ioc.Registry(NewConf, NewEnvLoader)
-}
-func NewConf(env EnvLoader) (Conf, error) {
-	conf := Conf{
-		envLoader:         env,
-		PORT:              env.Get("PORT"),
-		VERSION:           env.Get(constants.Version),
-		ENVIRONMENT:       env.Get("ENVIRONMENT"),
-		PROJECT_NAME:      env.Get("PROJECT_NAME"),
-		GOOGLE_PROJECT_ID: env.Get("GOOGLE_PROJECT_ID"),
-	}
-	if conf.PORT == "" {
-		conf.PORT = "8080"
-	}
-	return validateConfig(conf)
+	ioc.Registry(NewConf)
 }
 
-func (c Conf) LoadFromSystem(key string) string {
-	return c.envLoader.Get(key)
+type Conf struct {
+	VERSION           string `env:"version,required"`
+	PORT              string `env:"PORT" envDefault:"8080"`
+	ENVIRONMENT       string `env:"ENVIRONMENT" envDefault:"development"`
+	PROJECT_NAME      string `env:"PROJECT_NAME,required"`
+	GOOGLE_PROJECT_ID string `env:"GOOGLE_PROJECT_ID"`
+}
+
+func NewConf() (Conf, error) {
+	return Parse[Conf]()
 }

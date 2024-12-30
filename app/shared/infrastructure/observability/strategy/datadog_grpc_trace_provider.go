@@ -25,8 +25,8 @@ func DatadogGRPCTraceProvider(conf configuration.Conf) (trace.Tracer, error) {
 
 	exporterOpts := []otlptracegrpc.Option{}
 
-	exporterOpts = append(exporterOpts, otlptracegrpc.WithEndpoint(conf.LoadFromSystem(OTEL_EXPORTER_OTLP_ENDPOINT)))
-	if conf.LoadFromSystem(OTEL_EXPORTER_OTLP_INSECURE) == "true" {
+	exporterOpts = append(exporterOpts, otlptracegrpc.WithEndpoint(configuration.Getenv(OTEL_EXPORTER_OTLP_ENDPOINT)))
+	if configuration.Getenv(OTEL_EXPORTER_OTLP_INSECURE) == "true" {
 		exporterOpts = append(exporterOpts, otlptracegrpc.WithTLSCredentials(insecure.NewCredentials()))
 	}
 	client := otlptracegrpc.NewClient(
