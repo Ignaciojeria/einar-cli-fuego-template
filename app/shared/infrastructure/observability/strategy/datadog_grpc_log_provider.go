@@ -23,8 +23,8 @@ func DatadogGRPCLogProvider(conf configuration.Conf) (*slog.Logger, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 
 	var exporterOpts []otlploggrpc.Option
-	exporterOpts = append(exporterOpts, otlploggrpc.WithEndpoint(conf.LoadFromSystem(OTEL_EXPORTER_OTLP_ENDPOINT)))
-	if conf.LoadFromSystem(OTEL_EXPORTER_OTLP_INSECURE) == "true" {
+	exporterOpts = append(exporterOpts, otlploggrpc.WithEndpoint(configuration.Getenv(OTEL_EXPORTER_OTLP_ENDPOINT)))
+	if configuration.Getenv(OTEL_EXPORTER_OTLP_INSECURE) == "true" {
 		exporterOpts = append(exporterOpts, otlploggrpc.WithTLSCredentials(insecure.NewCredentials()))
 	}
 	// Create the exporter

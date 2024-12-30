@@ -13,8 +13,8 @@
                 "destination_file": "app/shared/configuration/conf.go"
             },
             {
-                "source_file": "app/shared/configuration/env_loader.go",
-                "destination_file": "app/shared/configuration/env_loader.go"
+                "source_file": "app/shared/configuration/parse.go",
+                "destination_file": "app/shared/configuration/parse.go"
             },
             {
                 "source_file": "main.go",

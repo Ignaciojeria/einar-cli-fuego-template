@@ -17,7 +17,7 @@ func init() {
 
 func newLoggerProvider(conf configuration.Conf) (*slog.Logger, error) {
 	// Get the observability strategy
-	observabilityStrategyKey := conf.LoadFromSystem(strategy.OBSERVABILITY_STRATEGY)
+	observabilityStrategyKey := configuration.Getenv(strategy.OBSERVABILITY_STRATEGY)
 	switch observabilityStrategyKey {
 	case "openobserve":
 		return strategy.OpenObserveGRPCLogProvider(conf)

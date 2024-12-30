@@ -4,16 +4,14 @@ import (
 	ioc "github.com/Ignaciojeria/einar-ioc/v2"
 )
 
-type GeminiConfiguration struct {
-	GEMINI_API_KEY string `required:"true"`
+func init() {
+	ioc.Registry(NewGeminiConfiguration)
 }
 
-func init() {
-	ioc.Registry(NewGeminiConfiguration, NewEnvLoader)
+type GeminiConfiguration struct {
+	GEMINI_API_KEY string `env:"GEMINI_API_KEY,required"`
 }
-func NewGeminiConfiguration(env EnvLoader) (GeminiConfiguration, error) {
-	conf := GeminiConfiguration{
-		GEMINI_API_KEY: env.Get("GEMINI_API_KEY"),
-	}
-	return validateConfig(conf)
+
+func NewGeminiConfiguration() (GeminiConfiguration, error) {
+	return Parse[GeminiConfiguration]()
 }
