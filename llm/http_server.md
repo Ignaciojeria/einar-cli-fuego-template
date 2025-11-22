@@ -106,3 +106,18 @@ func WrapPostStd(s Server, path string, f func(w http.ResponseWriter, r *http.Re
     fuego.PostStd(s.Manager, path, f)
 }
 ```
+
+## 5. Mandatory Registration in main.go
+
+> [!IMPORTANT]
+> **When creating the HTTP Server, the LLM MUST ensure that `main.go` contains a blank import for the server package.**
+
+**Required Import:**
+
+```go
+_ "<module-name>/app/shared/infrastructure/httpserver"
+```
+
+**Why?**
+Without this import, the server will not be registered in the IoC system (einar-ioc), and the application will fail to start or register controllers.
+This requirement is **mandatory** and **non-optional**.

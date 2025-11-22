@@ -94,6 +94,22 @@ Without this blank import, the server will not be registered in the IoC system (
 
 For detailed server documentation, see [/llm/http_server.md](/llm/http_server.md).
 
+
+## 7. Mandatory Registration in main.go
+
+> [!IMPORTANT]
+> **Every time a new controller is generated, the LLM MUST ensure that `main.go` contains a blank import for the controller package.**
+
+**Required Import:**
+
+```go
+_ "<module-name>/app/adapter/in/fuegoapi"
+```
+
+**Why?**
+Without this import, the controller will not be registered in the IoC container (einar-ioc), and the application will not load the controller.
+This requirement is **mandatory** and **non-optional**.
+
 ## 5. Checklist
 
 - [ ] File created in `app/adapter/in/fuegoapi/`.
@@ -103,3 +119,4 @@ For detailed server documentation, see [/llm/http_server.md](/llm/http_server.md
 - [ ] Controller function accepts `httpserver.Server`.
 - [ ] Route defined on `s.Manager`.
 - [ ] `.einar.cli.json` updated with correct `kind` and `name`.
+- [ ] `main.go` includes blank import `_ "<module-name>/app/adapter/in/fuegoapi"`.
