@@ -157,4 +157,34 @@ _ "<module-name>/app/shared/infrastructure/postgresql"
 ```
 
 **Why?**
-Without this import, the connection provider will not be registered in the IoC system.
+
+## 5. Configuration Update (.einar.cli.json)
+
+The `.einar.cli.json` file must be updated when creating the infrastructure and when creating a new repository.
+
+### A. Infrastructure Registration (Installations)
+
+When the PostgreSQL infrastructure (connection and configuration) is created, add the following object to the `installations` array if it does not already exist:
+
+```json
+{
+    "name": "postgresql",
+    "unique": "",
+    "libraries": [
+        "gorm.io/gorm",
+        "gorm.io/driver/postgres",
+        "gorm.io/plugin/opentelemetry/tracing"
+    ]
+}
+```
+
+### B. Component Registration (Repositories)
+
+Every new repository component **MUST** be registered in the `components` array.
+
+```json
+{
+    "kind": "postgresql-repository",
+    "name": "component-name" // kebab-case (e.g., "save-customer")
+}
+```
