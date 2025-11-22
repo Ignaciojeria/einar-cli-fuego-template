@@ -9,6 +9,7 @@ func init() {
 }
 
 type PostgreSQLConfiguration struct {
+	DATABASE_URL               string `env:"DATABASE_URL"`
 	DATABASE_POSTGRES_HOSTNAME string `env:"DATABASE_POSTGRES_HOSTNAME,required"`
 	DATABASE_POSTGRES_PORT     string `env:"DATABASE_POSTGRES_PORT,required"`
 	DATABASE_POSTGRES_NAME     string `env:"DATABASE_POSTGRES_NAME,required"`
