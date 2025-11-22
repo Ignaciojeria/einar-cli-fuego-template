@@ -72,6 +72,28 @@ Every new controller **MUST** be registered in the `.einar.cli.json` file in the
 | **Go Function** | camelCase | `createEmployees` |
 | **Route Path** | kebab-case | `/employees` |
 
+## 6. Infrastructure Dependency: HTTP Server
+
+All controllers depend on the `httpserver.Server` infrastructure component.
+This component is responsible for providing the underlying `fuego.Server` instance used to register routes.
+Without this server, controllers cannot be initialized or registered in the IoC container.
+
+Controllers must import:
+
+```go
+import "<module-name>/app/shared/infrastructure/httpserver"
+```
+
+and `main.go` must include the blank import:
+
+```go
+_ "<module-name>/app/shared/infrastructure/httpserver"
+```
+
+Without this blank import, the server will not be registered in the IoC system (einar-ioc), and all controllers will fail.
+
+For detailed server documentation, see [/llm/http_server.md](/llm/http_server.md).
+
 ## 5. Checklist
 
 - [ ] File created in `app/adapter/in/fuegoapi/`.
