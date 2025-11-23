@@ -121,3 +121,19 @@ _ "<module-name>/app/shared/infrastructure/httpserver"
 **Why?**
 Without this import, the server will not be registered in the IoC system (einar-ioc), and the application will fail to start or register controllers.
 This requirement is **mandatory** and **non-optional**.
+
+## 6. Configuration Update (.einar.cli.json)
+
+The `.einar.cli.json` file must be updated when creating the infrastructure.
+
+### A. Infrastructure Registration (Installations)
+
+When the HTTP Server infrastructure is created, add the following object to the `installations` array if it does not already exist:
+
+```json
+{
+    "name": "fuego",
+    "unique": "http-server",
+    "libraries": null
+}
+```
